@@ -58,4 +58,10 @@
   <ItemGroup>
     <Folder Include="Properties" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="CorrectionValues.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AR Calculation.sql" />
+  </ItemGroup>
 </Project>
