@@ -68,22 +68,22 @@ DECLARE @TotalAR float
 
 Select 
 	@WeaponName = [English Name],
-	@CorrectionId = CorrectionId,
-	@PhysicalBase = PhysicalDamage,
-	@StrScaling = CorrectStrength / 100,
-	@DexScaling = CorrectDexterity / 100,
-	@MagicBase = MagicDamage,
-	@IntScaling = CorrectMagic / 100,
-	@FireBase = FireDamage,
-	@LightningBase = LightningDamage,
-	@FthScaling = CorrectFaith / 100
+	@CorrectionId = [Correct Type],
+	@PhysicalBase = [Physical Damage],
+	@StrScaling = [Correct Strength] / 100,
+	@DexScaling = [Correct Agility] / 100,
+	@MagicBase = [Magic Damage],
+	@IntScaling = [Correct Magic] / 100,
+	@FireBase = [Fire Damage],
+	@LightningBase = [Lightning Damage],
+	@FthScaling = [Correct Faith] / 100
 From Weapons Where Id = @WeaponId
 
 Select
 	@Infusion = [Name],
 	@UpgradePhysicalModifer = PhysicsAtkRate,
 	@UpgradeStrModifier = CorrectStrengthRate,
-	@UpgradeDexModifier = CorrectDexterityRate,
+	@UpgradeDexModifier = CorrectAgilityRate,
 	@UpgradeMagicModifier = MagicAtkRate,
 	@UpgradeIntModifier = CorrectMagicRate,
 	@UpgradeFireModifier = FireAtkRate,
