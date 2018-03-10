@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DarkSoulsReact.Services
 {
@@ -16,31 +17,30 @@ namespace DarkSoulsReact.Services
             _context = context;
         }
 
-        public IEnumerable<BaseWeapon> GetBaseWeapons()
+        public async Task<IEnumerable<BaseWeapon>> GetBaseWeaponsAsync()
         {
-            return _context.BaseWeapons
-                .ToList()
-                .Select(i => new BaseWeapon { BaseWeaponId = i.Id, Name = i.Name }); ;
+            return await _context.BaseWeapons
+                .Select(i => new BaseWeapon { Id = i.Id, Name = i.Name })
+                .ToListAsync();
         }
 
-        public IEnumerable<Infusion> GetInfusionsForBaseWeapon(int baseWeaponId)
+        public async Task<IEnumerable<Infusion>> GetInfusionsForBaseWeaponAsync(int baseWeaponId)
         {
-            IEnumerable<int> infusionIds = _context.Weapons.Where(w => w.BaseWeaponId == baseWeaponId)
-                                                   .ToList()
-                                                   .Select(w => w.InfusionId);
+            IEnumerable<int> infusionIds = await _context.Weapons.Where(w => w.BaseWeaponId == baseWeaponId)
+                                                   .Select(w => w.InfusionId)
+                                                   .ToListAsync();
 
-            return _context.Infusions.Where(i => infusionIds.Contains(i.Id))
-                                     .ToList()
-                                     .Select(i => new Infusion { InfusionId = i.Id, Name = i.Name });
+            return await _context.Infusions.Where(i => infusionIds.Contains(i.Id))
+                                     .Select(i => new Infusion { Id = i.Id, Name = i.Name })
+                                     .ToListAsync();
         }
 
-        public IEnumerable<WeaponUpgrade> GetWeaponUpgrades(int infusionId)
+        public async Task<IEnumerable<WeaponUpgrade>> GetWeaponUpgradesAsync(int infusionId)
         {
-            return _context.WeaponUpgrades.Where(u => u.InfusionId == infusionId)
-                                          .ToList()
+            return await _context.WeaponUpgrades.Where(u => u.InfusionId == infusionId)
                                           .Select(u => new WeaponUpgrade
                                           {
-                                              WeaponUpgradeId = u.Id,
+                                              Id = u.Id,
                                               InfusionId = u.InfusionId,
                                               Name = u.Name,
                                               PhysicsAtkRate = u.PhysicsAtkRate,
@@ -51,12 +51,13 @@ namespace DarkSoulsReact.Services
                                               CorrectAgilityRate = u.CorrectAgilityRate,
                                               CorrectMagicRate = u.CorrectMagicRate,
                                               CorrectFaithRate = u.CorrectFaithRate
-                                          });
+                                          })
+                                          .ToListAsync();
         }
 
-        public Weapon GetWeapon(int baseWeaponId, int infusionId)
+        public async Task<Weapon> GetWeaponAsync(int baseWeaponId, int infusionId)
         {
-            var weapon = _context.Weapons.FirstOrDefault(w => w.BaseWeaponId == baseWeaponId && w.InfusionId == infusionId);
+            var weapon = await _context.Weapons.FirstOrDefaultAsync(w => w.BaseWeaponId == baseWeaponId && w.InfusionId == infusionId);
             if (weapon == null)
             {
                 throw new ArgumentException($"No Weapon found with BaseWeaponId {baseWeaponId}, InfusionId {infusionId}.");
@@ -65,7 +66,7 @@ namespace DarkSoulsReact.Services
             {
                 BaseWeaponId = weapon.BaseWeaponId,
                 InfusionId = weapon.InfusionId,
-                WeaponId = weapon.Id,
+                Id = weapon.Id,
                 PhysicalDamage = weapon.PhysicalDamage,
                 MagicDamage = weapon.MagicDamage,
                 FireDamage = weapon.FireDamage,
@@ -78,13 +79,13 @@ namespace DarkSoulsReact.Services
                 RequiredAgility = weapon.RequiredAgility,
                 RequiredMagic = weapon.RequiredMagic,
                 RequiredFaith = weapon.RequiredFaith,
-                CorrectionBreakpoints = GetCorrectionBreakpoints(weapon.CorrectType)
+                CorrectionBreakpoints = await GetCorrectionBreakpointsAsync(weapon.CorrectType)
             };
         }
 
-        public CorrectionBreakpoints GetCorrectionBreakpoints(int correctionId)
+        public async Task<CorrectionBreakpoints> GetCorrectionBreakpointsAsync(int correctionId)
         {
-            Corrections corrections = _context.Corrections.FirstOrDefault(c => c.Id == correctionId);
+            Corrections corrections = await _context.Corrections.FirstOrDefaultAsync(c => c.Id == correctionId);
             if (corrections == null)
             {
                 throw new ArgumentException($"No Corrections found with Id {correctionId}.");

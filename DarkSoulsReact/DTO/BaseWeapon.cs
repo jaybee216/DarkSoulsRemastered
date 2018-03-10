@@ -7,7 +7,7 @@ namespace DarkSoulsReact.DTO
 {
     public class BaseWeapon
     {
-        public int BaseWeaponId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
     }
 }

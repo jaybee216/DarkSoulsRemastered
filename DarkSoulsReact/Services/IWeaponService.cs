@@ -8,10 +8,10 @@ namespace DarkSoulsReact.Services
 {
     public interface IWeaponService
     {
-        IEnumerable<BaseWeapon> GetBaseWeapons();
-        IEnumerable<Infusion> GetInfusionsForBaseWeapon(int baseWeaponId);
-        IEnumerable<WeaponUpgrade> GetWeaponUpgrades(int infusionId);
-        Weapon GetWeapon(int baseWeaponId, int infusionId);
-        CorrectionBreakpoints GetCorrectionBreakpoints(int correctionId);
+        Task<IEnumerable<BaseWeapon>> GetBaseWeaponsAsync();
+        Task<IEnumerable<Infusion>> GetInfusionsForBaseWeaponAsync(int baseWeaponId);
+        Task<IEnumerable<WeaponUpgrade>> GetWeaponUpgradesAsync(int infusionId);
+        Task<Weapon> GetWeaponAsync(int baseWeaponId, int infusionId);
+        Task<CorrectionBreakpoints> GetCorrectionBreakpointsAsync(int correctionId);
     }
 }

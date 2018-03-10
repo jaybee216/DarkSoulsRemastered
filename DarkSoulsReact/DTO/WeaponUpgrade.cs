@@ -7,7 +7,7 @@ namespace DarkSoulsReact.DTO
 {
     public class WeaponUpgrade
     {
-        public int WeaponUpgradeId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public int InfusionId { get; set; }
         public double PhysicsAtkRate { get; set; }
