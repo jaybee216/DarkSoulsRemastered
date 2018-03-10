@@ -211,3 +211,4 @@ Print 'Total Fire: ' + CAST(@TotalFire as VARCHAR)
 Print 'Total Lightning: ' + CAST(@TotalLightning as VARCHAR)
 
 Print 'Total AR: ' + CAST(@TotalAR as VARCHAR)
+GO

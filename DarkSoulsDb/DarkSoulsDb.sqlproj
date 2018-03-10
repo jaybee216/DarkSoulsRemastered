@@ -60,9 +60,24 @@
     <Folder Include="Queries" />
     <Folder Include="Views" />
     <Folder Include="Stored Procedures" />
+    <Folder Include="Tables" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Queries\AR Calculation.sql" />
     <Build Include="Stored Procedures\CorrectionValues.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\BaseWeapons.sql" />
+    <Build Include="Tables\Corrections.sql" />
+    <Build Include="Tables\Infusions.sql" />
+    <Build Include="Tables\Protectors.sql" />
+    <Build Include="Tables\ProtectorUpgrades.sql" />
+    <Build Include="Tables\Upgrades.sql" />
+    <Build Include="Tables\Weapons.sql" />
+    <Build Include="Tables\WeaponUpgrades.sql" />
+    <Build Include="Views\WeaponInfusions.sql" />
+    <Build Include="Views\WeaponUpgradeInfusions.sql" />
+    <None Include="Queries\Extract Infusion Ids.sql" />
+    <None Include="Queries\Extract WeaponUpgrade Infusions.sql" />
   </ItemGroup>
 </Project>
