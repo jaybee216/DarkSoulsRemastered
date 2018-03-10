@@ -7,6 +7,8 @@ namespace DarkSoulsReact.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string EnglishName { get; set; }
+        public int InfusionId { get; set; }
         public double PhysicsAtkRate { get; set; }
         public double MagicAtkRate { get; set; }
         public double FireAtkRate { get; set; }

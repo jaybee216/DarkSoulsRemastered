@@ -6,7 +6,9 @@ namespace DarkSoulsReact.Models
     public partial class Upgrades
     {
         public int Id { get; set; }
+        public string EnglishName { get; set; }
         public string Name { get; set; }
+        public int? InfusionId { get; set; }
         public double? MaterialId01 { get; set; }
         public double? ItemNum01 { get; set; }
         public bool IsDisableDispNum01 { get; set; }

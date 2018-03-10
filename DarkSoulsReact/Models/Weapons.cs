@@ -6,6 +6,8 @@ namespace DarkSoulsReact.Models
     public partial class Weapons
     {
         public int Id { get; set; }
+        public int BaseWeaponId { get; set; }
+        public int InfusionId { get; set; }
         public string EnglishName { get; set; }
         public double? BehaviorVariationId { get; set; }
         public double? SortId { get; set; }
@@ -81,7 +83,7 @@ namespace DarkSoulsReact.Models
         public double AttackMaterial { get; set; }
         public double DefendMaterial { get; set; }
         public double DefendSfxMaterial { get; set; }
-        public double CorrectType { get; set; }
+        public int CorrectType { get; set; }
         public double SpecialAttributes { get; set; }
         public double SpecialAttackCategory { get; set; }
         public double WeaponMotionOneHandedId { get; set; }

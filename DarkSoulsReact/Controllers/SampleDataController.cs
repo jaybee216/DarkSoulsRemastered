@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DarkSoulsReact.Models;
+using DarkSoulsReact.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,11 +12,13 @@ namespace DarkSoulsReact.Controllers
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-        private readonly DarkSoulsDbContext _context;
+        private readonly DarkSoulsDbContext context;
+        private readonly IWeaponService weaponService;
 
-        public SampleDataController(DarkSoulsDbContext context)
+        public SampleDataController(DarkSoulsDbContext _context, IWeaponService _weaponService)
         {
-            _context = context;
+            context = _context;
+            weaponService = _weaponService;
         }
 
         private static string[] Summaries = new[]
@@ -26,7 +29,17 @@ namespace DarkSoulsReact.Controllers
         [HttpGet("[action]")]
         public IEnumerable<WeatherForecast> WeatherForecasts()
         {
-            var weapon = _context.Weapons.First();
+            var baseWeapons = weaponService.GetBaseWeapons();
+
+            var shortSword = baseWeapons.First(w => w.Name == "Shortsword");
+
+            var infusions = weaponService.GetInfusionsForBaseWeapon(shortSword.BaseWeaponId);
+
+            var magic = infusions.First(i => i.Name == "Magic");
+
+            var magicShortsword = weaponService.GetWeapon(shortSword.BaseWeaponId, magic.InfusionId);
+
+            var possibleUpgrades = weaponService.GetWeaponUpgrades(magic.InfusionId);
 
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast

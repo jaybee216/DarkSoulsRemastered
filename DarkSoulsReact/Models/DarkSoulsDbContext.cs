@@ -6,16 +6,18 @@ namespace DarkSoulsReact.Models
 {
     public partial class DarkSoulsDbContext : DbContext
     {
+        public virtual DbSet<BaseWeapons> BaseWeapons { get; set; }
         public virtual DbSet<Corrections> Corrections { get; set; }
+        public virtual DbSet<Infusions> Infusions { get; set; }
         public virtual DbSet<Protectors> Protectors { get; set; }
         public virtual DbSet<ProtectorUpgrades> ProtectorUpgrades { get; set; }
         public virtual DbSet<Upgrades> Upgrades { get; set; }
         public virtual DbSet<Weapons> Weapons { get; set; }
         public virtual DbSet<WeaponUpgrades> WeaponUpgrades { get; set; }
 
-        public DarkSoulsDbContext(DbContextOptions<DarkSoulsDbContext> options)
-    : base(options)
-        { }
+        public DarkSoulsDbContext(DbContextOptions<DarkSoulsDbContext> options) : base(options)
+        {
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -26,6 +28,13 @@ namespace DarkSoulsReact.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<BaseWeapons>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Name).HasMaxLength(255);
+            });
+
             modelBuilder.Entity<Corrections>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
@@ -57,6 +66,13 @@ namespace DarkSoulsReact.Models
                 entity.Property(e => e.TranslatedName)
                     .HasColumnName("Translated Name")
                     .HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<Infusions>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Name).HasMaxLength(255);
             });
 
             modelBuilder.Entity<Protectors>(entity =>
@@ -343,6 +359,10 @@ namespace DarkSoulsReact.Models
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
 
+                entity.Property(e => e.EnglishName)
+                    .HasColumnName("English Name")
+                    .HasMaxLength(255);
+
                 entity.Property(e => e.Name).HasMaxLength(255);
             });
 
@@ -614,6 +634,10 @@ namespace DarkSoulsReact.Models
             modelBuilder.Entity<WeaponUpgrades>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.EnglishName)
+                    .HasColumnName("English Name")
+                    .HasMaxLength(255);
 
                 entity.Property(e => e.Name).HasMaxLength(255);
             });
