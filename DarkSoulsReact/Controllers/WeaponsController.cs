@@ -41,7 +41,7 @@ namespace DarkSoulsReact.Controllers
         //TODO: Move to different controller (InfusionsController?)
         [HttpGet]
         [Route("infusions/{infusionId}/upgrades")]
-        [ProducesResponseType(typeof(IEnumerable<Infusion>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<WeaponUpgrade>), 200)]
         public async Task<IActionResult> WeaponUpgrades(int infusionId)
         {
             IEnumerable<WeaponUpgrade> upgrades = await weaponService.GetWeaponUpgradesAsync(infusionId);

@@ -33,8 +33,11 @@ displayName = CalculatorForm.name
         fetch('api/Weapons/BaseWeapons')
             .then(response => response.json())
             .then(data => {
-                this.setState({ baseWeapons: data, selectedBaseWeapon: data[0], loading: false });
-                this.handleBaseWeaponChange(data[0].id);
+                this.setState({ 
+                    baseWeapons: data, 
+                    selectedBaseWeapon: data[0], 
+                    loading: false 
+                });
             });
     }
 
@@ -48,37 +51,53 @@ displayName = CalculatorForm.name
     }
 
     handleBaseWeaponChange(id) {
-        var baseWeapon = this.state.baseWeapons.find(w => w.id === parseInt(id, 0));
+        if (this.state.selectedBaseWeapon && 
+            this.state.selectedBaseWeapon.id === id &&
+            this.state.infusions.length > 0) {
+            return;
+        }
 
-        this.setState({
-            selectedBaseWeapon: baseWeapon
-        });
+        var baseWeapon = this.state.baseWeapons.find(w => w.id === parseInt(id, 0));
 
         fetch(`api/Weapons/${id}/Infusions`)
             .then(response => response.json())
             .then(data => {
-                this.setState({ infusions: data, selectedInfusion: data[0]});
-                this.handleInfusionChange(data[0].id);
+                this.setState({ 
+                    selectedBaseWeapon: baseWeapon, 
+                    infusions: data, 
+                    selectedInfusion: data[0],
+                    upgrades: [],
+                    selectedUpgrade: null
+                });
             });
     }
 
+    //Why does this get called multiple times when changing weapon?
     handleInfusionChange(id) {
-        var infusion = this.state.infusions.find(i =>i.id === parseInt(id, 0));
+        if (this.state.selectedInfusion && 
+            this.state.selectedInfusion.id === id &&
+            this.state.upgrades.length > 0) {
+            return;
+        }
 
-        this.setState({
-            selectedInfusion: infusion
-        });
+        var infusion = this.state.infusions.find(i =>i.id === parseInt(id, 0));
 
         //Get the compatible weapon upgrades for this Infusion type
         fetch(`api/Weapons/Infusions/${id}/Upgrades`)
             .then(response => response.json())
             .then(data => {
-                this.setState({ upgrades: data, selectedUpgrade: data[0] });
-                this.handleUpgradeChange(data[0].id);
+                this.setState({ 
+                    selectedInfusion: infusion, 
+                    upgrades: data, selectedUpgrade: data[0] 
+                });
             });
     }
 
     handleUpgradeChange(id) {
+        if (this.state.selectedUpgrade && this.state.selectedUpgrade.id === id) {
+            return;
+        }
+
         var upgrade = this.state.upgrades.find(u => u.id === parseInt(id, 0));
 
         this.setState({
@@ -97,32 +116,28 @@ displayName = CalculatorForm.name
                     <fieldset>
                         <legend>STR:</legend>
                             <input name="STR"
-                                type="number"
-                                min="1"
+                                type="number" min="1" max="99"
                                 value={this.state.STR}
                                 onChange={this.handleChange} />
                     </fieldset>
                     <fieldset>
                         <legend>DEX:</legend>
                             <input name="DEX"
-                                type="number"
-                                min="1"
+                                type="number" min="1" max="99"
                                 value={this.state.DEX}
                                 onChange={this.handleChange} />
                     </fieldset>
                     <fieldset>
                         <legend>INT:</legend>
                             <input name="INT"
-                                type="number"
-                                min="1"
+                                type="number" min="1" max="99"
                                 value={this.state.INT}
                                 onChange={this.handleChange} />
                     </fieldset>
                     <fieldset>
                         <legend>FTH:</legend>
                             <input name="FTH"
-                                type="number"
-                                min="1"
+                                type="number" min="1" max="99"
                                 value={this.state.FTH}
                                 onChange={this.handleChange} />
                     </fieldset>

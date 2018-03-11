@@ -17,9 +17,19 @@ export class Calculator extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!nextProps.selectedBaseWeapon || !nextProps.selectedInfusion) {
+        const baseWeapon = nextProps.selectedBaseWeapon;
+        const infusion = nextProps.selectedInfusion;
+
+        if (!baseWeapon || !infusion) {
             return;
         }
+
+        if (this.props.selectedBaseWeapon && this.props.selectedInfusion &&
+            baseWeapon.id === this.props.selectedBaseWeapon.id &&
+            infusion.id === this.props.selectedInfusion.id) {
+            return;
+        }
+
         //Retrieve the stats for this Base Weapon + Infusion combination
         fetch(`api/Weapons/${nextProps.selectedBaseWeapon.id}/Infusions/${nextProps.selectedInfusion.id}`)
             .then(response => response.json())

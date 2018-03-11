@@ -40,10 +40,24 @@ export class AttackRatingCalculation extends Component {
     calculateAttackRating(props) {
         const weapon = props.weapon;
         const upgrade = props.upgrade;
+        const str = props.str;
+        const dex = props.dex;
+        const int = props.int;
+        const fth = props.fth;
 
         if (!weapon || !upgrade) {
             return;
         }
+
+        if (this.props.weapon && this.props.upgrade &&
+            weapon.id === this.props.weapon.id &&
+            upgrade.id === this.props.upgrade.id &&
+            str === this.props.str &&
+            dex === this.props.dex &&
+            int === this.props.int &&
+            fth === this.props.fth) {
+                return;
+            }
 
         //Weapon: Base Damage
         const physBase = weapon.physicalDamage;
@@ -58,11 +72,6 @@ export class AttackRatingCalculation extends Component {
         const fthScaling = weapon.correctFaith;
 
         //Weapon: Correction values
-        const str = props.str;
-        const dex = props.dex;
-        const int = props.int;
-        const fth = props.fth;
-
         const breakpoints = weapon.correctionBreakpoints;
 
         var strCorrection = this.calculateCorrectionValuesForAttribute(str, breakpoints);

@@ -8,6 +8,12 @@ export class SelectInput extends Component {
         this.handleOptionChange = this.handleOptionChange.bind(this)
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.selectedOption && nextProps.selectedOption != this.props.selectedOption){
+            this.props.onSelectOptionChange(nextProps.selectedOption.id);
+        }
+    }
+
     handleOptionChange(event) {
         const target = event.target;
         const id = target.value;
