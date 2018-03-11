@@ -13,10 +13,9 @@ namespace DarkSoulsReact.Controllers
     [Route("api/[controller]")]
     public class WeaponsController : Controller
     {
-        private readonly DarkSoulsDbContext context;
         private readonly IWeaponService weaponService;
 
-        public WeaponsController(DarkSoulsDbContext _context, IWeaponService _weaponService)
+        public WeaponsController(IWeaponService _weaponService)
         {
             weaponService = _weaponService;
         }

@@ -14,7 +14,7 @@ export class WeaponDetails extends Component {
 
         return (
             <div>
-                <h1>Weapon Details</h1>
+                <h2>Weapon Details</h2>
                 {contents}
             </div>
         );
@@ -27,6 +27,8 @@ export class WeaponDetails extends Component {
             <ul>
                 <li>
                     Id: {weapon.id}
+                </li>
+                <li>
                     Name: {weapon.name}
                 </li>
             </ul>
