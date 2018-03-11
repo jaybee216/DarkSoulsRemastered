@@ -25,83 +25,63 @@ export class Calculator extends Component {
         fetch('api/Weapons/BaseWeapons')
             .then(response => response.json())
             .then(data => {
-                this.setState({ baseWeapons: data, loading: false });
+                this.setState({ baseWeapons: data, selectedBaseWeapon: data[0], loading: false });
+                this.handleBaseWeaponChange(data[0].id);
             });
     }
 
-    handleBaseWeaponChange(event) {
-        const target = event.target;
-        const baseWeaponId = target.value;
+    handleBaseWeaponChange(id) {
+        var baseWeapon = this.state.baseWeapons.find(w => w.id === parseInt(id, 0));
 
         this.setState({
-            selectedBaseWeapon: baseWeaponId
+            selectedBaseWeapon: baseWeapon
         });
 
-        fetch(`api/Weapons/${baseWeaponId}/Infusions`)
+        fetch(`api/Weapons/${id}/Infusions`)
             .then(response => response.json())
             .then(data => {
-                this.setState({ infusions: data });
+                this.setState({ infusions: data, selectedInfusion: data[0]});
+                this.handleInfusionChange(data[0].Id);
             });
     }
 
-    handleInfusionChange(event) {
-        const target = event.target;
-        const infusionId = target.value;
+    handleInfusionChange(id) {
+        var infusion = this.state.infusions.find(i =>i.id === parseInt(id, 0));
 
         this.setState({
-            selectedInfusion: infusionId
+            selectedInfusion: infusion
         });
 
-        fetch(`api/Weapons/Infusions/${infusionId}/Upgrades`)
+        fetch(`api/Weapons/Infusions/${id}/Upgrades`)
             .then(response => response.json())
             .then(data => {
-                this.setState({ upgrades: data });
+                this.setState({ upgrades: data, selectedUpgrade: data[0] });
+                this.handleUpgradeChange(data[0].Id);
             });
     }
 
-    handleUpgradeChange(event) {
+    handleUpgradeChange(id) {
+        var upgrade = this.state.upgrades.find(u => u.id === parseInt(id, 0));
+
         this.setState({
-            selectedUpgrade: event.target.value
+            selectedUpgrade: upgrade
         });
     }
 
     renderCalculator() {
         return (
-            //<div>
-            //    <select value={this.state.selectedBaseWeapon} onChange={this.handleBaseWeaponChange}>
-            //        {this.state.baseWeapons.map(weapon =>
-            //            <option key={weapon.baseWeaponId} value={weapon.baseWeaponId}>
-            //                {weapon.name}
-            //            </option>
-            //        )}
-            //    </select>
-            //    <select value={this.state.selectedInfusion} onChange={this.handleInfusionChange}>
-            //        {this.state.infusions.map(infusion =>
-            //            <option key={infusion.infusionId} value={infusion.infusionId}>
-            //                {infusion.name}
-            //            </option>
-            //        )}
-            //    </select>
-            //    <select value={this.state.selectedUpgrade} onChange={this.handleUpgradeChange}>
-            //        {this.state.upgrades.map(upgrade =>
-            //            <option key={upgrade.weaponUpgradeId} value={upgrade.weaponUpgradeId}>
-            //                {upgrade.name}
-            //            </option>
-            //        )}
-            //    </select>
-            //</div>
             <div>
                 <SelectInput name="baseWeapon"
                     options={this.state.baseWeapons}
-                    selectedOption={this.state.selectedBaseWeapon.baseWeaponId}
+                    selectedOption={this.state.selectedBaseWeapon}
                     onSelectOptionChange={this.handleBaseWeaponChange} />
                 <SelectInput name="infusion"
                     options={this.state.infusions}
-                    selectedOption={this.state.selectedInfusion.infusionId}
+                    selectedOption={this.state.selectedInfusion}
                     onSelectOptionChange={this.handleInfusionChange} />
                 <SelectInput name="upgrade"
                     options={this.state.upgrades}
-                    selectedOption={this.state.selectedUpgrade.weaponUpgradeId}
+                    selectedOption={this.state.selectedUpgrade}
                     onSelectOptionChange={this.handleUpgradeChange} />
             </div>
         );

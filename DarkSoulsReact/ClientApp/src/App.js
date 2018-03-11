@@ -3,7 +3,6 @@ import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { Calculator } from './components/Calculator';
-import { WeaponSelection } from './components/WeaponSelection';
 
 export default class App extends Component {
   displayName = App.name
