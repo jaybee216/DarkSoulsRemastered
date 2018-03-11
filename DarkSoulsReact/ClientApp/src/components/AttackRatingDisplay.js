@@ -22,7 +22,6 @@ export class AttackRatingDisplay extends Component {
                 <span class="fire">{totalFire}</span>
                 &nbsp;/&nbsp;
                 <span class="lightning">{totalLightning}</span>
-                &nbsp;/&nbsp;
             </div>
         );
     }
