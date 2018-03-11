@@ -64,6 +64,7 @@ namespace DarkSoulsReact.Services
             }
             return new Weapon
             {
+                DisplayName = weapon.EnglishName,
                 BaseWeaponId = weapon.BaseWeaponId,
                 InfusionId = weapon.InfusionId,
                 Id = weapon.Id,

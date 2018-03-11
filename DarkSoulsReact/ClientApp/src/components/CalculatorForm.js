@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Col, Grid, Row } from 'react-bootstrap';
 import {Calculator} from './Calculator';
+import { SelectInput } from './SelectInput';
 
 export class CalculatorForm extends Component {
 displayName = CalculatorForm.name
@@ -11,10 +12,30 @@ displayName = CalculatorForm.name
             STR: 1,
             DEX: 1,
             INT: 1,
-            FTH: 1
+            FTH: 1,
+            baseWeapons: [],
+            selectedBaseWeapon: null,
+            infusions: [],
+            selectedInfusion: null,
+            upgrades: [],
+            selectedUpgrade: null,
+            loading: true
         }
 
         this.handleChange = this.handleChange.bind(this);
+
+        this.handleBaseWeaponChange = this.handleBaseWeaponChange.bind(this);
+        this.handleInfusionChange = this.handleInfusionChange.bind(this);
+        this.handleUpgradeChange = this.handleUpgradeChange.bind(this);
+    }
+
+    componentWillMount() {
+        fetch('api/Weapons/BaseWeapons')
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ baseWeapons: data, selectedBaseWeapon: data[0], loading: false });
+                this.handleBaseWeaponChange(data[0].id);
+            });
     }
 
     //TODO: Ensure only a valid integer within [1, 99]
@@ -25,6 +46,46 @@ displayName = CalculatorForm.name
         value = value === "" ? previousValue : value;
         this.setState({[e.target.name]: value });
     }
+
+    handleBaseWeaponChange(id) {
+        var baseWeapon = this.state.baseWeapons.find(w => w.id === parseInt(id, 0));
+
+        this.setState({
+            selectedBaseWeapon: baseWeapon
+        });
+
+        fetch(`api/Weapons/${id}/Infusions`)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ infusions: data, selectedInfusion: data[0]});
+                this.handleInfusionChange(data[0].id);
+            });
+    }
+
+    handleInfusionChange(id) {
+        var infusion = this.state.infusions.find(i =>i.id === parseInt(id, 0));
+
+        this.setState({
+            selectedInfusion: infusion
+        });
+
+        //Get the compatible weapon upgrades for this Infusion type
+        fetch(`api/Weapons/Infusions/${id}/Upgrades`)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ upgrades: data, selectedUpgrade: data[0] });
+                this.handleUpgradeChange(data[0].id);
+            });
+    }
+
+    handleUpgradeChange(id) {
+        var upgrade = this.state.upgrades.find(u => u.id === parseInt(id, 0));
+
+        this.setState({
+            selectedUpgrade: upgrade
+        });
+    }
+
 
     render() {
         //TODO: Use bootstrap components, not fieldset + legend
@@ -67,7 +128,22 @@ displayName = CalculatorForm.name
                     </fieldset>
                 </Col>
                 <Col sm={9}>
-                    <Calculator str={this.state.STR}
+                <SelectInput name="baseWeapon"
+                    options={this.state.baseWeapons}
+                    selectedOption={this.state.selectedBaseWeapon}
+                    onSelectOptionChange={this.handleBaseWeaponChange} />
+                <SelectInput name="infusion"
+                    options={this.state.infusions}
+                    selectedOption={this.state.selectedInfusion}
+                    onSelectOptionChange={this.handleInfusionChange} />
+                <SelectInput name="upgrade"
+                    options={this.state.upgrades}
+                    selectedOption={this.state.selectedUpgrade}
+                    onSelectOptionChange={this.handleUpgradeChange} />
+                <Calculator  selectedBaseWeapon={this.state.selectedBaseWeapon}
+                selectedInfusion={this.state.selectedInfusion}
+                                selectedUpgrade={this.state.selectedUpgrade}
+                                str={this.state.STR}
                                 dex={this.state.DEX}
                                 int={this.state.INT}
                                 fth={this.state.FTH} />

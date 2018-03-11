@@ -18,5 +18,12 @@ namespace DarkSoulsReact.DTO
         public double CorrectAgilityRate { get; set; }
         public double CorrectMagicRate { get; set; }
         public double CorrectFaithRate { get; set; }
+
+        public string Level {
+            get{
+                var split = Name.Split("+");
+                return split.Count() > 1 ? $"+{split.Last()}" : "" ;
+            }
+        }
     }
 }

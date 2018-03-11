@@ -9,6 +9,7 @@ export class AttackRatingCalculation extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            weaponDisplayName: '',
             totalPhysical: 0,
             totalMagic: 0,
             totalFire: 0,
@@ -23,7 +24,8 @@ export class AttackRatingCalculation extends Component {
     render() {
         return (
         <div>
-            <AttackRatingDisplay totalPhysical={this.state.totalPhysical}
+            <AttackRatingDisplay weaponDisplayName={this.state.weaponDisplayName}
+                         totalPhysical={this.state.totalPhysical}
                         totalMagic={this.state.totalMagic}
                         totalFire={this.state.totalFire}
                         totalLightning={this.state.totalLightning} />
@@ -84,6 +86,8 @@ export class AttackRatingCalculation extends Component {
         var dexBonus = (dexScaling / 100) * upgradeDexMod * (dexCorrection / 100);
         var intBonus = (intScaling / 100) * upgradeIntMod * (intCorrection / 100);
         var fthBonus = (fthScaling / 100) * upgradeFthMod * (fthCorrection / 100);
+
+        var fullWeaponName = `${weapon.displayName} ${upgrade.level}`;
     
         var totalPhysical = (physBase * upgradePhysMod) 
                             + (physBase * upgradePhysMod * strBonus)
@@ -102,6 +106,7 @@ export class AttackRatingCalculation extends Component {
                             + (lightBase * upgradeLightMod * fthBonus); 
                             
         this.setState({
+            weaponDisplayName: fullWeaponName,
             totalPhysical: totalPhysical,
             totalMagic: totalMagic,
             totalFire: totalFire,

@@ -15,13 +15,14 @@ export class AttackRatingDisplay extends Component {
         const totalLightning = this.props.totalLightning;
         return (
             <div>
-                <span class="physical">{totalPhysical}</span>
+                <h2>{this.props.weaponDisplayName}</h2>
+                <span class="physical">{totalPhysical.toFixed(0)}</span>
                 &nbsp;/&nbsp;
-                <span class="magic">{totalMagic}</span>
+                <span class="magic">{totalMagic.toFixed(0)}</span>
                 &nbsp;/&nbsp;
-                <span class="fire">{totalFire}</span>
+                <span class="fire">{totalFire.toFixed(0)}</span>
                 &nbsp;/&nbsp;
-                <span class="lightning">{totalLightning}</span>
+                <span class="lightning">{totalLightning.toFixed(0)}</span>
             </div>
         );
     }
