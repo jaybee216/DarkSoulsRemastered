@@ -1,5 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { SelectInput } from './SelectInput';
+import {WeaponDetails} from './WeaponDetails';
 
 export class Calculator extends Component {
     displayName = Calculator.name
@@ -13,7 +14,8 @@ export class Calculator extends Component {
             selectedInfusion: '',
             upgrades: [],
             selectedUpgrade: '',
-            loading: true
+            loading: true,
+            weaponDetails: null
         }
 
         this.handleBaseWeaponChange = this.handleBaseWeaponChange.bind(this);
@@ -52,11 +54,19 @@ export class Calculator extends Component {
             selectedInfusion: infusion
         });
 
+        //Get the compatible weapon upgrades for this Infusion type
         fetch(`api/Weapons/Infusions/${id}/Upgrades`)
             .then(response => response.json())
             .then(data => {
                 this.setState({ upgrades: data, selectedUpgrade: data[0] });
                 this.handleUpgradeChange(data[0].Id);
+            });
+
+        //Retrieve the stats for this Base Weapon + Infusion combination
+        fetch(`api/Weapons/${this.state.selectedBaseWeapon.id}/Infusions/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ weaponDetails: data });
             });
     }
 
@@ -68,9 +78,23 @@ export class Calculator extends Component {
         });
     }
 
+    render() {
+        let contents = this.state.loading
+            ? <p><em>Loading...</em></p>
+            : this.renderCalculator();
+
+        return (
+            <div>
+                <h1>AR Calculator</h1>
+                {contents}
+            </div>
+        );
+    }
+
     renderCalculator() {
         return (
             <div>
+                <div>
                 <SelectInput name="baseWeapon"
                     options={this.state.baseWeapons}
                     selectedOption={this.state.selectedBaseWeapon}
@@ -83,19 +107,10 @@ export class Calculator extends Component {
                     options={this.state.upgrades}
                     selectedOption={this.state.selectedUpgrade}
                     onSelectOptionChange={this.handleUpgradeChange} />
-            </div>
-        );
-    }
-
-    render() {
-        let contents = this.state.loading
-            ? <p><em>Loading...</em></p>
-            : this.renderCalculator();
-
-        return (
-            <div>
-                <h1>Weapons</h1>
-                {contents}
+                </div>
+                <div>
+                    <WeaponDetails weapon={this.state.weaponDetails} />
+                </div>
             </div>
         );
     }

@@ -15,9 +15,11 @@ export class SelectInput extends Component {
     }
 
     render() {
+        const selectedOption = this.props.selectedOption;
+        const selectedValue = selectedOption ? selectedOption.id : "";
         return (
             <select name={this.props.name}
-                    value={this.props.selectedOption ? this.props.selectedOption.id : ""}
+                    value={selectedValue}
                     onChange={this.handleOptionChange}>
                 {this.props.options.map(option =>
                     <option key={option.id} value={option.id}>

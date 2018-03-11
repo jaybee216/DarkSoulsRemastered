@@ -48,5 +48,13 @@ namespace DarkSoulsReact.Controllers
             IEnumerable<WeaponUpgrade> upgrades = await weaponService.GetWeaponUpgradesAsync(infusionId);
             return Ok(upgrades);
         }
+
+        [HttpGet]
+        [Route("{baseWeaponId}/infusions/{infusionId}")]
+        [ProducesResponseType(typeof(Weapon), 200)]
+        public async Task<IActionResult> WeaponDetails(int baseWeaponId, int infusionId) {
+            Weapon weapon = await weaponService.GetWeaponAsync(baseWeaponId, infusionId);
+            return Ok(weapon);
+        }
     }
 }
