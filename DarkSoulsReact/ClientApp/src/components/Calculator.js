@@ -52,6 +52,7 @@ export class Calculator extends Component {
                                             dex={this.props.dex}
                                             int={this.props.int}
                                             fth={this.props.fth}
+                                            
                                             weapon={this.state.weaponDetails}
                                              upgrade={this.props.selectedUpgrade} />
                 </div>

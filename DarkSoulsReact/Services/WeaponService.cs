@@ -42,16 +42,17 @@ namespace DarkSoulsReact.Services
                                           {
                                               Id = u.Id,
                                               InfusionId = u.InfusionId,
-                                              Name = u.Name,
+                                              Name = u.EnglishName,
                                               PhysicsAtkRate = u.PhysicsAtkRate,
                                               MagicAtkRate = u.MagicAtkRate,
                                               FireAtkRate = u.FireAtkRate,
-                                              ThunderAtkRate = u.ThunderAtkRate,
+                                              LightningAtkRate = u.ThunderAtkRate,
                                               CorrectStrengthRate = u.CorrectStrengthRate,
                                               CorrectAgilityRate = u.CorrectAgilityRate,
                                               CorrectMagicRate = u.CorrectMagicRate,
                                               CorrectFaithRate = u.CorrectFaithRate
                                           })
+                                          .OrderByDescending(u => u.Id)
                                           .ToListAsync();
         }
 

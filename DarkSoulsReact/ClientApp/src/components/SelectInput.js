@@ -9,7 +9,7 @@ export class SelectInput extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.selectedOption && nextProps.selectedOption != this.props.selectedOption){
+        if (nextProps.selectedOption && nextProps.selectedOption !== this.props.selectedOption){
             this.props.onSelectOptionChange(nextProps.selectedOption.id);
         }
     }

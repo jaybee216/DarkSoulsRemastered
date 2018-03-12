@@ -13,7 +13,7 @@ namespace DarkSoulsReact.DTO
         public double PhysicsAtkRate { get; set; }
         public double MagicAtkRate { get; set; }
         public double FireAtkRate { get; set; }
-        public double ThunderAtkRate { get; set; }
+        public double LightningAtkRate { get; set; }
         public double CorrectStrengthRate { get; set; }
         public double CorrectAgilityRate { get; set; }
         public double CorrectMagicRate { get; set; }

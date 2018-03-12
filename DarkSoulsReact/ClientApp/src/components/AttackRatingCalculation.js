@@ -9,26 +9,96 @@ export class AttackRatingCalculation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            weaponDisplayName: '',
-            totalPhysical: 0,
-            totalMagic: 0,
-            totalFire: 0,
-            totalLightning: 0
-        };
+            weaponName: '',
+            upgradeLevel: '',
 
-        //TODO: Not sure if we need to bind these or not
-        this.calculateAttackRating = this.calculateAttackRating.bind(this);
-        this.calculateCorrectionValuesForAttribute = this.calculateCorrectionValuesForAttribute.bind(this);
+            physicalBase: 0,
+            magicBase: 0,
+            fireBase: 0,
+            lightningBase: 0,
+
+            strScaling: 0,
+            dexScaling: 0,
+            intScaling: 0,
+            fthScaling: 0,
+
+            physicalBaseModifier: 0,
+            magicBaseModifier: 0,
+            fireBaseModifier: 0,
+            lightningBaseModifier: 0,
+
+            strScalingModifier: 0,
+            dexScalingModifier: 0,
+            intScalingModifier: 0,
+            fthScalingModifier: 0,
+
+            strCorrection: 0,
+            dexCorrection: 0,
+            intCorrection: 0,
+            fthCorrection: 0
+        };
     }
 
     render() {
+        const physBase = this.state.physicalBase;
+        const magicBase = this.state.magicBase;
+        const fireBase = this.state.fireBase;
+        const lightBase = this.state.lightningBase;
+
+        const upgradePhysMod = this.state.physicalBaseModifier;
+        const upgradeMagicMod = this.state.magicBaseModifier;
+        const upgradeFireMod = this.state.fireBaseModifier;
+        const upgradeLightMod = this.state.lightningBaseModifier;
+
+        const strScaling = this.state.strScaling;
+        const dexScaling = this.state.dexScaling;
+        const intScaling = this.state.intScaling;
+        const fthScaling = this.state.fthScaling;
+
+        const upgradeStrMod = this.state.strScalingModifier;
+        const upgradeDexMod = this.state.dexScalingModifier;
+        const upgradeIntMod = this.state.intScalingModifier;
+        const upgradeFthMod = this.state.fthScalingModifier;
+
+        const strCorrection = this.state.strCorrection;
+        const dexCorrection = this.state.dexCorrection;
+        const intCorrection = this.state.intCorrection;
+        const fthCorrection = this.state.fthCorrection;
+
+        var strBonus = (strScaling / 100) * upgradeStrMod * (strCorrection / 100);
+        var dexBonus = (dexScaling / 100) * upgradeDexMod * (dexCorrection / 100);
+        var intBonus = (intScaling / 100) * upgradeIntMod * (intCorrection / 100);
+        var fthBonus = (fthScaling / 100) * upgradeFthMod * (fthCorrection / 100);
+    
+        var totalPhysical = (physBase * upgradePhysMod) 
+                            + (physBase * upgradePhysMod * strBonus)
+                            + (physBase * upgradePhysMod * dexBonus);
+
+        var totalMagic = (magicBase * upgradeMagicMod) 
+                            + (magicBase * upgradeMagicMod * intBonus)
+                            + (magicBase * upgradeMagicMod * fthBonus);   
+                            
+        var totalFire = (fireBase * upgradeFireMod) 
+                            + (fireBase * upgradeFireMod * intBonus)
+                            + (fireBase * upgradeFireMod * fthBonus);  
+        
+        var totalLightning = (lightBase * upgradeLightMod) 
+                            + (lightBase * upgradeLightMod * intBonus)
+                            + (lightBase * upgradeLightMod * fthBonus);  
+
+        var fullWeaponName = `${this.state.weaponName} ${this.state.upgradeLevel}`;
+
         return (
         <div>
-            <AttackRatingDisplay weaponDisplayName={this.state.weaponDisplayName}
-                         totalPhysical={this.state.totalPhysical}
-                        totalMagic={this.state.totalMagic}
-                        totalFire={this.state.totalFire}
-                        totalLightning={this.state.totalLightning} />
+            <AttackRatingDisplay weaponDisplayName={fullWeaponName}
+                        totalPhysical={totalPhysical}
+                        totalMagic={totalMagic}
+                        totalFire={totalFire}
+                        totalLightning={totalLightning}
+                        strScaling={strScaling * upgradeStrMod}
+                        dexScaling={dexScaling * upgradeDexMod}
+                        intScaling={intScaling * upgradeIntMod}
+                        fthScaling={fthScaling * upgradeFthMod} />
         </div>
         );
     }
@@ -59,6 +129,24 @@ export class AttackRatingCalculation extends Component {
                 return;
             }
 
+        if (this.props.str !== str || this.props.dex !== dex ||
+            this.props.int !== int || this.props.fth !== fth ) {
+            //Character attribute changed. Recalculate Correction values.
+            this.updateCorrectionValues(weapon, props);
+        } 
+        else if (!this.props.weapon || this.props.weapon.id !== weapon.id) {
+            //Weapon (BaseWeapon/Infusion combination) changed. Update Weapon, Correction and Upgrade values.
+            this.updateWeaponValues(weapon);
+            this.updateCorrectionValues(weapon, props);
+            this.updateUpgradeValues(upgrade);
+        }
+        else if (!this.props.upgrade || this.props.upgrade.id !== upgrade.id) {
+            //Weapon Upgrade Level changed. Update Upgrade values.
+            this.updateUpgradeValues(upgrade);
+        }
+    }
+
+    updateWeaponValues(weapon) {
         //Weapon: Base Damage
         const physBase = weapon.physicalDamage;
         const magicBase = weapon.magicDamage;
@@ -71,19 +159,44 @@ export class AttackRatingCalculation extends Component {
         const intScaling = weapon.correctMagic;
         const fthScaling = weapon.correctFaith;
 
+        const displayName = weapon.displayName;
+
+        this.setState({
+            physicalBase: physBase,
+            magicBase: magicBase,
+            fireBase: fireBase,
+            lightningBase: lightBase,
+            strScaling: strScaling,
+            dexScaling: dexScaling,
+            intScaling: intScaling,
+            fthScaling: fthScaling,
+            weaponName: displayName
+        });
+    }
+
+    updateCorrectionValues(weapon, props) {
         //Weapon: Correction values
         const breakpoints = weapon.correctionBreakpoints;
 
-        var strCorrection = this.calculateCorrectionValuesForAttribute(str, breakpoints);
-        var dexCorrection = this.calculateCorrectionValuesForAttribute(dex, breakpoints);
-        var intCorrection = this.calculateCorrectionValuesForAttribute(int, breakpoints);
-        var fthCorrection = this.calculateCorrectionValuesForAttribute(fth, breakpoints);
+        var strCorrection = this.calculateCorrectionValuesForAttribute(props.str, breakpoints);
+        var dexCorrection = this.calculateCorrectionValuesForAttribute(props.dex, breakpoints);
+        var intCorrection = this.calculateCorrectionValuesForAttribute(props.int, breakpoints);
+        var fthCorrection = this.calculateCorrectionValuesForAttribute(props.fth, breakpoints);
+    
+        this.setState({
+            strCorrection: strCorrection,
+            dexCorrection: dexCorrection,
+            intCorrection: intCorrection,
+            fthCorrection: fthCorrection
+        });
+    }
 
+    updateUpgradeValues(upgrade) {
         //Upgrade: Base Damage Modifiers
         const upgradePhysMod = upgrade.physicsAtkRate;
         const upgradeMagicMod = upgrade.magicAtkRate;
         const upgradeFireMod = upgrade.fireAtkRate;
-        const upgradeLightMod = upgrade.thunderAtkRate;
+        const upgradeLightMod = upgrade.lightningAtkRate;
 
         //Upgrade: Scaling Modifiers
         const upgradeStrMod = upgrade.correctStrengthRate;
@@ -91,35 +204,18 @@ export class AttackRatingCalculation extends Component {
         const upgradeIntMod = upgrade.correctMagicRate;
         const upgradeFthMod = upgrade.correctFaithRate;
 
-        var strBonus = (strScaling / 100) * upgradeStrMod * (strCorrection / 100);
-        var dexBonus = (dexScaling / 100) * upgradeDexMod * (dexCorrection / 100);
-        var intBonus = (intScaling / 100) * upgradeIntMod * (intCorrection / 100);
-        var fthBonus = (fthScaling / 100) * upgradeFthMod * (fthCorrection / 100);
+        const upgradeLevel = upgrade.level;
 
-        var fullWeaponName = `${weapon.displayName} ${upgrade.level}`;
-    
-        var totalPhysical = (physBase * upgradePhysMod) 
-                            + (physBase * upgradePhysMod * strBonus)
-                            + (physBase * upgradePhysMod * dexBonus);
-
-        var totalMagic = (magicBase * upgradeMagicMod) 
-                            + (magicBase * upgradeMagicMod * intBonus)
-                            + (magicBase * upgradeMagicMod * fthBonus);   
-                            
-        var totalFire = (fireBase * upgradeFireMod) 
-                            + (fireBase * upgradeFireMod * intBonus)
-                            + (fireBase * upgradeFireMod * fthBonus);  
-        
-        var totalLightning = (lightBase * upgradeLightMod) 
-                            + (lightBase * upgradeLightMod * intBonus)
-                            + (lightBase * upgradeLightMod * fthBonus); 
-                            
         this.setState({
-            weaponDisplayName: fullWeaponName,
-            totalPhysical: totalPhysical,
-            totalMagic: totalMagic,
-            totalFire: totalFire,
-            totalLightning: totalLightning
+            physicalBaseModifier: upgradePhysMod,
+            magicBaseModifier: upgradeMagicMod,
+            fireBaseModifier: upgradeFireMod,
+            lightningBaseModifier: upgradeLightMod,
+            strScalingModifier: upgradeStrMod,
+            dexScalingModifier: upgradeDexMod,
+            intScalingModifier: upgradeIntMod,
+            fthScalingModifier: upgradeFthMod,
+            upgradeLevel: upgradeLevel
         });
     }
 
