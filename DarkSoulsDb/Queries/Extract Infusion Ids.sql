@@ -20,3 +20,21 @@ Update WeaponUpgrades
 Set InfusionId = CAST(LEFT(REPLACE(STR(Id, 4), SPACE(1), '0'), 2) + '00' AS INT),
 [English Name] = [Name]
 GO
+
+-- Manual steps for Clubs, Crossbows, Bows, Shields
+
+Update Weapons
+Set InfusionId = InfusionId + 2000
+Where [English name] like '%club%'
+
+Update Weapons
+Set InfusionId = InfusionId + 8000
+Where [English name] like '%crossbow%'
+
+--TODO: Have not figured out Bows yet
+--Update Weapons
+--Set InfusionId = InfusionId + 9000
+--Where [English name] like '%bow%' and [English name] not like '%crossbow%'
+
+
+

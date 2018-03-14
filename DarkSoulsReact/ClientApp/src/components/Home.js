@@ -1,26 +1,39 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
 export class Home extends Component {
-  displayName = Home.name
+    displayName = Home.name
 
-  render() {
-    return (
-      <div>
-        <h1>Hello, world!</h1>
-        <p>Welcome to your new single-page application, built with:</p>
-        <ul>
-          <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-          <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-          <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-        </ul>
-        <p>To help you get started, we've also set up:</p>
-        <ul>
-          <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-          <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-          <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-        </ul>
-        <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div>
+                <h1>Dark Souls Remastered</h1>
+                <p>Welcome to the (unofficial) <Link to={'/calculator'}>AR Calculator</Link> for Dark Souls Remastered.</p>
+                <p>This app is a work in progress. Expect to see new features to be added, bugs to be fixed, data corrections to be made, and for the look and feel to evolve over time.</p>
+                
+                <Link to={'/calculator'}><Button bsStyle="primary" bsSize="large">Go to Calculator</Button></Link>
+                
+                <h2>Known Issues (Updated 3/14/18)</h2>
+                <ul>
+                    <li>AR is not always immediately shown for the default-selected weapon on page load</li>
+                    <li>AR calculations for Bows and Crossbows are not correct</li>
+                    <li>Magic Adjust is not being calculated for Staves and Talismans</li>
+                    <li>Humanity damage bonus is not currently accounted for for Chaos Weapons</li>
+                </ul>
+                <h2>Planned Features/Additions (Updated 3/14/18)</h2>
+                <ul>
+                    <li>Add ability to filter weapons by category</li>
+                    <li>Add option to two-hand weapon</li>
+                    <li>Add ability to toggle between showing scaling as percentages or as letter grades</li>
+                    <li>Display an infographic showing scaling corrections for STR/DEX/INT/FTH from 1-99</li>
+                </ul>
+                <h2>Changelog</h2>
+                <ul>
+                    <li>3/14/18: Corrected calculations for Clubs, show correct Infusions + Upgrades for Crossbows (AR calculations still incorrect)</li>
+                    <li>3/13/18: Initial Release</li>
+                </ul>
+            </div>
+        );
+    }
 }
