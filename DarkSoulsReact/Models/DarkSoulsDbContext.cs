@@ -11,6 +11,7 @@ namespace DarkSoulsReact.Models
         public virtual DbSet<Infusions> Infusions { get; set; }
         public virtual DbSet<Protectors> Protectors { get; set; }
         public virtual DbSet<ProtectorUpgrades> ProtectorUpgrades { get; set; }
+        public virtual DbSet<StartingClass> StartingClass { get; set; }
         public virtual DbSet<Upgrades> Upgrades { get; set; }
         public virtual DbSet<Weapons> Weapons { get; set; }
         public virtual DbSet<WeaponUpgrades> WeaponUpgrades { get; set; }
@@ -353,6 +354,14 @@ namespace DarkSoulsReact.Models
                 entity.Property(e => e.TranslatedName)
                     .HasColumnName("Translated name")
                     .HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<StartingClass>(entity =>
+            {
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Upgrades>(entity =>

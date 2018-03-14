@@ -14,10 +14,12 @@ namespace DarkSoulsReact.Controllers
     public class WeaponsController : Controller
     {
         private readonly IWeaponService weaponService;
+        private readonly ICharacterService characterService;
 
-        public WeaponsController(IWeaponService _weaponService)
+        public WeaponsController(IWeaponService _weaponService, ICharacterService _characterService)
         {
             weaponService = _weaponService;
+            characterService = _characterService;
         }
 
         [HttpGet]
@@ -37,8 +39,7 @@ namespace DarkSoulsReact.Controllers
             IEnumerable<Infusion> infusions = await weaponService.GetInfusionsForBaseWeaponAsync(baseWeaponId);
             return Ok(infusions);
         }
-
-        //TODO: Move to different controller (InfusionsController?)
+        
         [HttpGet]
         [Route("infusions/{infusionId}/upgrades")]
         [ProducesResponseType(typeof(IEnumerable<WeaponUpgrade>), 200)]
@@ -54,6 +55,16 @@ namespace DarkSoulsReact.Controllers
         public async Task<IActionResult> WeaponDetails(int baseWeaponId, int infusionId) {
             Weapon weapon = await weaponService.GetWeaponAsync(baseWeaponId, infusionId);
             return Ok(weapon);
+        }
+
+        //TODO: Move to a different controller
+        [HttpGet]
+        [Route("startingClasses")]
+        [ProducesResponseType(typeof(IEnumerable<DTO.StartingClass>), 200)]
+        public async Task<IActionResult> StartingClasses()
+        {
+            IEnumerable<DTO.StartingClass> startingClasses = await characterService.GetStartingClassesAsync();
+            return Ok(startingClasses);
         }
     }
 }

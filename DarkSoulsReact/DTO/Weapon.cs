@@ -24,5 +24,12 @@ namespace DarkSoulsReact.DTO
         public double RequiredMagic { get; set; }
         public double RequiredFaith { get; set; }
         public CorrectionBreakpoints CorrectionBreakpoints { get; set; }
+
+        public double OccultBonus { get; set; }
+        public double DivineBonus { get; set; }
+
+        public double Weight { get; set; }
+        public double Durability { get; set; }
+        public double Critical { get; set; }
     }
 }

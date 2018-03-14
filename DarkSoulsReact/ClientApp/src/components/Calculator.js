@@ -1,7 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { SelectInput } from './SelectInput';
-import {WeaponDetails} from './WeaponDetails';
-import {AttackRatingDisplay} from './AttackRatingDisplay';
+import { WeaponDetails } from './WeaponDetails';
 import { AttackRatingCalculation } from './AttackRatingCalculation';
 
 export class Calculator extends Component {
@@ -13,7 +11,7 @@ export class Calculator extends Component {
             weaponDetails: null
         };
 
-        
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -41,25 +39,14 @@ export class Calculator extends Component {
     render() {
         return (
             <div>
-                <div>
-                    <p>STR: {this.props.str}&nbsp;DEX: {this.props.dex}&nbsp;INT: {this.props.int}&nbsp;FTH: {this.props.fth}</p>
-                </div>
-                <div>
-                
-                </div>
-                <div>
-                    <AttackRatingCalculation str={this.props.str}
-                                            dex={this.props.dex}
-                                            int={this.props.int}
-                                            fth={this.props.fth}
-                                            
-                                            weapon={this.state.weaponDetails}
-                                             upgrade={this.props.selectedUpgrade} />
-                </div>
+                <AttackRatingCalculation str={this.props.str}
+                    dex={this.props.dex}
+                    int={this.props.int}
+                    fth={this.props.fth}
 
-                <div>
-                    <WeaponDetails weapon={this.state.weaponDetails} />
-                </div>
+                    weapon={this.state.weaponDetails}
+                    upgrade={this.props.selectedUpgrade} />
+                <WeaponDetails weapon={this.state.weaponDetails} />
             </div>
         );
     }

@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { SelectInput } from './SelectInput';
-import { WeaponDetails } from './WeaponDetails';
 import { AttackRatingDisplay } from './AttackRatingDisplay';
 
 export class AttackRatingCalculation extends Component {
@@ -22,6 +20,11 @@ export class AttackRatingCalculation extends Component {
             intScaling: 0,
             fthScaling: 0,
 
+            strCorrection: 0,
+            dexCorrection: 0,
+            intCorrection: 0,
+            fthCorrection: 0,
+
             physicalBaseModifier: 0,
             magicBaseModifier: 0,
             fireBaseModifier: 0,
@@ -30,12 +33,7 @@ export class AttackRatingCalculation extends Component {
             strScalingModifier: 0,
             dexScalingModifier: 0,
             intScalingModifier: 0,
-            fthScalingModifier: 0,
-
-            strCorrection: 0,
-            dexCorrection: 0,
-            intCorrection: 0,
-            fthCorrection: 0
+            fthScalingModifier: 0
         };
     }
 
@@ -50,6 +48,11 @@ export class AttackRatingCalculation extends Component {
         const upgradeFireMod = this.state.fireBaseModifier;
         const upgradeLightMod = this.state.lightningBaseModifier;
 
+        const strCorrection = this.state.strCorrection;
+        const dexCorrection = this.state.dexCorrection;
+        const intCorrection = this.state.intCorrection;
+        const fthCorrection = this.state.fthCorrection;
+
         const strScaling = this.state.strScaling;
         const dexScaling = this.state.dexScaling;
         const intScaling = this.state.intScaling;
@@ -59,11 +62,6 @@ export class AttackRatingCalculation extends Component {
         const upgradeDexMod = this.state.dexScalingModifier;
         const upgradeIntMod = this.state.intScalingModifier;
         const upgradeFthMod = this.state.fthScalingModifier;
-
-        const strCorrection = this.state.strCorrection;
-        const dexCorrection = this.state.dexCorrection;
-        const intCorrection = this.state.intCorrection;
-        const fthCorrection = this.state.fthCorrection;
 
         var strBonus = (strScaling / 100) * upgradeStrMod * (strCorrection / 100);
         var dexBonus = (dexScaling / 100) * upgradeDexMod * (dexCorrection / 100);

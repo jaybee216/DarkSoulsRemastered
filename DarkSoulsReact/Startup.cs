@@ -26,7 +26,8 @@ namespace DarkSoulsReact
 
             services.AddDbContext<Models.DarkSoulsDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlite(Configuration.GetConnectionString("DefaultSqliteConnection"));
             });
 
             // In production, the React files will be served from this directory
@@ -36,6 +37,7 @@ namespace DarkSoulsReact
             });
 
             services.AddTransient<IWeaponService, WeaponService>();
+            services.AddTransient<ICharacterService, CharacterService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

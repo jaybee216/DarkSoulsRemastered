@@ -20,6 +20,7 @@ namespace DarkSoulsReact.Services
         public async Task<IEnumerable<BaseWeapon>> GetBaseWeaponsAsync()
         {
             return await _context.BaseWeapons
+                .Where(w => !w.IsHidden)
                 .Select(i => new BaseWeapon { Id = i.Id, Name = i.Name })
                 .ToListAsync();
         }
@@ -81,7 +82,12 @@ namespace DarkSoulsReact.Services
                 RequiredAgility = weapon.RequiredAgility,
                 RequiredMagic = weapon.RequiredMagic,
                 RequiredFaith = weapon.RequiredFaith,
-                CorrectionBreakpoints = await GetCorrectionBreakpointsAsync(weapon.CorrectType)
+                CorrectionBreakpoints = await GetCorrectionBreakpointsAsync(weapon.CorrectType),
+                OccultBonus = weapon.AntiDemonDamageRate,
+                DivineBonus = weapon.AntSaintDamageRate,
+                Weight = weapon.Weight,
+                Durability = weapon.MaxDurability,
+                Critical = weapon.OverStrength //TODO
             };
         }
 

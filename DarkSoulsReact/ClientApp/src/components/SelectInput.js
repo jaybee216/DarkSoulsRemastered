@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 
 export class SelectInput extends Component {
     displayName = SelectInput.name
@@ -9,7 +10,7 @@ export class SelectInput extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.selectedOption && nextProps.selectedOption !== this.props.selectedOption){
+        if (nextProps.selectedOption && nextProps.selectedOption !== this.props.selectedOption) {
             this.props.onSelectOptionChange(nextProps.selectedOption.id);
         }
     }
@@ -24,15 +25,16 @@ export class SelectInput extends Component {
         const selectedOption = this.props.selectedOption;
         const selectedValue = selectedOption ? selectedOption.id : "";
         return (
-            <select name={this.props.name}
-                    value={selectedValue}
-                    onChange={this.handleOptionChange}>
+            <FormControl componentClass="select"
+                name={this.props.name}
+                value={selectedValue}
+                onChange={this.handleOptionChange}>
                 {this.props.options.map(option =>
                     <option key={option.id} value={option.id}>
                         {option.name}
                     </option>
                 )}
-            </select>
+            </FormControl>
         );
     }
 }
