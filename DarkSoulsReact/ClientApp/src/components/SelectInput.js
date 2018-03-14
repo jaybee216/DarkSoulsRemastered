@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 
 export class SelectInput extends Component {
     displayName = SelectInput.name
