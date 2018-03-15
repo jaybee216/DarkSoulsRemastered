@@ -1,3 +1,4 @@
 ﻿{
-  "sdk": { "version": "2.1.300-preview1-008174" }
+  //"sdk": { "version": "2.1.300-preview1-008174" }
+  "sdk": { "version": "2.1.2" }
 }
