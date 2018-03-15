@@ -7,8 +7,8 @@ namespace DarkSoulsReact.Models
     {
         public int Id { get; set; }
         public int BaseWeaponId { get; set; }
-        public int InfusionId { get; set; }
         public string EnglishName { get; set; }
+        public int ReinforceTypeId { get; set; }
         public double? BehaviorVariationId { get; set; }
         public double? SortId { get; set; }
         public double? WanderingEquipId { get; set; }
@@ -70,7 +70,6 @@ namespace DarkSoulsReact.Models
         public double SaDurability { get; set; }
         public double GuardAngle { get; set; }
         public double StaminaGuardDef { get; set; }
-        public double ReinforceTypeId { get; set; }
         public double TrophySgradeId { get; set; }
         public double TrophySeqId { get; set; }
         public double ThrowAtkRate { get; set; }

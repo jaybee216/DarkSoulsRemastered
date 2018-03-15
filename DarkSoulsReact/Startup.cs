@@ -23,12 +23,6 @@ namespace DarkSoulsReact
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddWebOptimizer(pipeline =>
-            {
-                //TODO
-                pipeline.MinifyJsFiles("ClientApp/src/*.js", "ClientApp/src/components/*.js");
-            });
-
             services.AddDbContext<Models.DarkSoulsDbContext>(options =>
             {
                 //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -59,7 +53,6 @@ namespace DarkSoulsReact
             }
 
             app.UseHttpsRedirection();
-            app.UseWebOptimizer();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 

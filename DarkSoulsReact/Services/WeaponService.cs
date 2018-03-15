@@ -28,7 +28,7 @@ namespace DarkSoulsReact.Services
         public async Task<IEnumerable<Infusion>> GetInfusionsForBaseWeaponAsync(int baseWeaponId)
         {
             IEnumerable<int> infusionIds = await _context.Weapons.Where(w => w.BaseWeaponId == baseWeaponId)
-                                                   .Select(w => w.InfusionId)
+                                                   .Select(w => w.ReinforceTypeId)
                                                    .ToListAsync();
 
             return await _context.Infusions.Where(i => infusionIds.Contains(i.Id))
@@ -59,7 +59,7 @@ namespace DarkSoulsReact.Services
 
         public async Task<Weapon> GetWeaponAsync(int baseWeaponId, int infusionId)
         {
-            var weapon = await _context.Weapons.FirstOrDefaultAsync(w => w.BaseWeaponId == baseWeaponId && w.InfusionId == infusionId);
+            var weapon = await _context.Weapons.FirstOrDefaultAsync(w => w.BaseWeaponId == baseWeaponId && w.ReinforceTypeId == infusionId);
             if (weapon == null)
             {
                 throw new ArgumentException($"No Weapon found with BaseWeaponId {baseWeaponId}, InfusionId {infusionId}.");
@@ -68,7 +68,7 @@ namespace DarkSoulsReact.Services
             {
                 DisplayName = weapon.EnglishName,
                 BaseWeaponId = weapon.BaseWeaponId,
-                InfusionId = weapon.InfusionId,
+                InfusionId = weapon.ReinforceTypeId,
                 Id = weapon.Id,
                 PhysicalDamage = weapon.PhysicalDamage,
                 MagicDamage = weapon.MagicDamage,
