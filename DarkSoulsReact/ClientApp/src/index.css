@@ -2,5 +2,15 @@
     /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
     body {
         padding-top: 50px;
+        padding-bottom:27px;
     }
+}
+
+footer {
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:27px;   /* Height of the footer */
+    padding-left:15px;
+    background: white;
 }

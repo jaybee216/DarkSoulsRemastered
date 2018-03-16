@@ -17,7 +17,7 @@ export class Home extends Component {
                 <h2>Known Issues (Updated 3/15/18)</h2>
                 <ul>
                     <li>AR is not always immediately shown for the default-selected weapon on page load</li>
-                    <li>AR calculations for certain infusions for Bows *may* not correct</li>
+                    <li>AR calculations for certain infusions for Bows *may* not be correct</li>
                     <li>AR calculations for Bows and Crossbows do not account for the Arrow/Bolt equipped</li>
                     <li>Magic Adjust is not being calculated for Staves and Talismans</li>
                     <li>Humanity damage bonus is not currently accounted for for Chaos Weapons</li>

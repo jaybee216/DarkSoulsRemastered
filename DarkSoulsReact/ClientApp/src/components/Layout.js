@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Col, Grid, Row } from 'react-bootstrap';
 import { NavMenu } from './NavMenu';
+import {Footer} from './Footer';
 
 export class Layout extends Component {
   displayName = Layout.name
@@ -16,6 +17,7 @@ export class Layout extends Component {
             {this.props.children}
           </Col>
         </Row>
+        <Footer />
       </Grid>
     );
   }

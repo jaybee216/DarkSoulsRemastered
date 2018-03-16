@@ -28,6 +28,11 @@ export class NavMenu extends Component {
                 <Glyphicon glyph='th-list' /> Calculator
               </NavItem>
             </LinkContainer>
+            <LinkContainer to={'/contact'}>
+              <NavItem>
+                <Glyphicon glyph='th-list' /> Contact
+              </NavItem>
+            </LinkContainer>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
