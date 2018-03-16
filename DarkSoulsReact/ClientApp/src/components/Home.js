@@ -10,21 +10,22 @@ export class Home extends Component {
             <div>
                 <h1>Dark Souls Remastered</h1>
                 <p>Welcome to the (unofficial) <Link to={'/calculator'}>AR Calculator</Link> for Dark Souls Remastered.</p>
-                <p>This app is a work in progress. Expect to see new features to be added, bugs to be fixed, data corrections to be made, and for the look and feel to evolve over time.</p>
+                <p>This app is a work in progress. Expect new features to be added, bugs to be fixed, data corrections to be made, and for the look and feel to evolve over time.</p>
                 
                 <Link to={'/calculator'}><Button bsStyle="primary" bsSize="large">Go to Calculator</Button></Link>
                 
                 <h2>Known Issues (Updated 3/15/18)</h2>
                 <ul>
                     <li>AR is not always immediately shown for the default-selected weapon on page load</li>
-                    <li>AR calculations for certain infusions for Bows *may* not be correct</li>
-                    <li>AR calculations for Bows and Crossbows do not account for the Arrow/Bolt equipped</li>
+                    <li>AR calculations for Bows and Crossbows do not yet account for the Arrow/Bolt equipped</li>
                     <li>Magic Adjust is not being calculated for Staves and Talismans</li>
                     <li>Humanity damage bonus is not currently accounted for for Chaos Weapons</li>
                     <li>Minimum attribute requirements are not taken into account</li>
                 </ul>
-                <h2>Planned Features/Additions (Updated 3/14/18)</h2>
+                <h2>Planned Features/Additions (Updated 3/16/18)</h2>
                 <ul>
+                    <li>Implement ability to select multiple weapons and compare their damage stats</li>
+                    <li>Allow the user to filter and sort the Weapon list</li>
                     <li>Add ability to filter weapons by category</li>
                     <li>Add option to two-hand weapon</li>
                     <li>Add ability to toggle between showing basic or detailed damage information</li>
@@ -34,6 +35,7 @@ export class Home extends Component {
                 </ul>
                 <h2>Changelog</h2>
                 <ul>
+                    <li>v0.1.3 3/16/18: Fixed a bug that was preventing the user from temporarily clearing the input fields for character attributes (very annoying for Mobile). Weapon list is now sorted A-Z.</li>
                     <li>v0.1.2 3/15/18: Corrected calculations for Demon (Boss), Special, and Dragon weapons. Corrected calculations for Crossbows and Bows (does not include damage for Arrows/Bolts)</li>
                     <li>v0.1.1 3/14/18: Corrected calculations for Clubs, show correct Infusions + Upgrades for Crossbows (AR calculations still incorrect)</li>
                     <li>v0.1.0 3/13/18: Initial Release</li>

@@ -21,6 +21,7 @@ namespace DarkSoulsReact.Services
         {
             return await _context.BaseWeapons
                 .Where(w => !w.IsHidden)
+                .OrderBy(w => w.Name)
                 .Select(i => new BaseWeapon { Id = i.Id, Name = i.Name })
                 .ToListAsync();
         }
@@ -32,6 +33,7 @@ namespace DarkSoulsReact.Services
                                                    .ToListAsync();
 
             return await _context.Infusions.Where(i => infusionIds.Contains(i.Id))
+                                     .OrderBy(i => i.Id)
                                      .Select(i => new Infusion { Id = i.Id, Name = i.Name })
                                      .ToListAsync();
         }

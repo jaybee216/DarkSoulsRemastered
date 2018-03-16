@@ -55,8 +55,7 @@ export class CalculatorForm extends Component {
     //Implement custom control with +/- arrows to change value rather than plain inputs
     handleChange(e) {
         var previousValue = this.state[e.target.name];
-        var value = (e.target.validity.valid) ? e.target.value : this.state[e.target.name];
-        value = value === "" ? previousValue : value;
+        var value = (e.target.validity.valid) ? e.target.value : previousValue;
         this.setState({ [e.target.name]: value });
     }
 
