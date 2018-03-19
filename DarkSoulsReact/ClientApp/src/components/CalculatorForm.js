@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, Row, Form, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+import { Col, Row, Form, FormGroup, ControlLabel, FormControl, Checkbox } from 'react-bootstrap';
 import { Calculator } from './Calculator';
 import { SelectInput } from './SelectInput';
 
@@ -15,16 +15,19 @@ export class CalculatorForm extends Component {
             dex: 1,
             int: 1,
             fth: 1,
+            humanity: 0,
             baseWeapons: [],
             selectedBaseWeapon: null,
             infusions: [],
             selectedInfusion: null,
             upgrades: [],
             selectedUpgrade: null,
-            cachedUpgrades: {}
+            cachedUpgrades: {},
+            isTwoHand: false
         }
 
         this.handleChange = this.handleChange.bind(this);
+        this.toggleTwoHand = this.toggleTwoHand.bind(this);
         this.handleStartingClassChange = this.handleStartingClassChange.bind(this);
         this.handleBaseWeaponChange = this.handleBaseWeaponChange.bind(this);
         this.handleInfusionChange = this.handleInfusionChange.bind(this);
@@ -51,12 +54,15 @@ export class CalculatorForm extends Component {
             });
     }
 
-    //TODO: Ensure only a valid integer within [1, 99]
-    //Implement custom control with +/- arrows to change value rather than plain inputs
+    //TODO: Implement custom control with +/- arrows to change value rather than plain inputs
     handleChange(e) {
         var previousValue = this.state[e.target.name];
         var value = (e.target.validity.valid) ? e.target.value : previousValue;
         this.setState({ [e.target.name]: value });
+    }
+
+    toggleTwoHand(e) {
+        this.setState({ isTwoHand: e.target.checked });
     }
 
     handleStartingClassChange(id) {
@@ -92,7 +98,7 @@ export class CalculatorForm extends Component {
                 });
             });
     }
-    
+
     handleInfusionChange(id) {
         if (this.state.selectedInfusion &&
             this.state.selectedInfusion.id === id &&
@@ -111,20 +117,20 @@ export class CalculatorForm extends Component {
             //If the weapon upgrades for this Infusion do not exist in the cache yet,
             //retrieve them from the API
             fetch(`api/Weapons/Infusions/${id}/Upgrades`)
-            .then(response => response.json())
-            .then(data => {
-                cachedUpgrades[id]=data;
-                this.setState({
-                    selectedInfusion: infusion,
-                    cachedUpgrades: cachedUpgrades,
-                    upgrades: data, selectedUpgrade: data[0]
+                .then(response => response.json())
+                .then(data => {
+                    cachedUpgrades[id] = data;
+                    this.setState({
+                        selectedInfusion: infusion,
+                        cachedUpgrades: cachedUpgrades,
+                        upgrades: data, selectedUpgrade: data[0]
+                    });
                 });
-            });
-        } 
+        }
         else {
             this.setState({
                 selectedInfusion: infusion,
-                upgrades: upgrades, selectedUpgrade:upgrades[0]
+                upgrades: upgrades, selectedUpgrade: upgrades[0]
             });
         }
     }
@@ -147,77 +153,64 @@ export class CalculatorForm extends Component {
                 <h1>AR Calculator</h1>
                 <Row>
                     <Col sm={2}>
-                        <Row>
-                            <Col sm={12}>
-                                <FormGroup>
-                                    <ControlLabel>Starting Class</ControlLabel>
-                                    <SelectInput name="startingClass"
-                                        displayName="Starting Class"
-                                        options={this.state.startingClasses}
-                                        selectedOption={this.state.selectedStartingClass}
-                                        onSelectOptionChange={this.handleStartingClassChange}
-                                    />
-                                </FormGroup>
-                                <Form horizontal>
-                                    <FormGroup controlId="strInput">
-                                        <Col componentClass={ControlLabel} sm={3}>
-                                            STR
-                                        </Col>
-                                        <Col sm={7}>
-                                            <FormControl
-                                                name="str"
-                                                type="number" min="1" max="99"
-                                                value={this.state.str}
-                                                onChange={this.handleChange}
-                                            />
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup controlId="dexInput">
-                                        <Col componentClass={ControlLabel} sm={3}>
-                                            DEX
-                                        </Col>
-                                        <Col sm={7}>
-                                            <FormControl
-                                                name="dex"
-                                                type="number" min="1" max="99"
-                                                value={this.state.dex}
-                                                onChange={this.handleChange}
-                                            />
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup controlId="intInput">
-                                        <Col componentClass={ControlLabel} sm={3}>
-                                            INT
-                                        </Col>
-                                        <Col sm={7}>
-                                            <FormControl
-                                                name="int"
-                                                type="number" min="1" max="99"
-                                                value={this.state.int}
-                                                onChange={this.handleChange}
-                                            />
-                                        </Col>
-                                    </FormGroup>
-                                    <FormGroup controlId="fthInput">
-                                        <Col componentClass={ControlLabel} sm={3}>
-                                            FTH
-                                        </Col>
-                                        <Col sm={7}>
-                                            <FormControl
-                                                name="fth"
-                                                type="number" min="1" max="99"
-                                                value={this.state.fth}
-                                                onChange={this.handleChange}
-                                            />
-                                        </Col>
-                                    </FormGroup>
-                                </Form>
-                            </Col>
-                        </Row>
+                        <FormGroup controlId="strInput">
+                            <ControlLabel>STR</ControlLabel>
+                            <FormControl
+                                name="str"
+                                type="number" min="1" max="99"
+                                value={this.state.str}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup controlId="dexInput">
+                            <ControlLabel>DEX</ControlLabel>
+                            <FormControl
+                                name="dex"
+                                type="number" min="1" max="99"
+                                value={this.state.dex}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup controlId="intInput">
+                            <ControlLabel>INT</ControlLabel>
+                            <FormControl
+                                name="int"
+                                type="number" min="1" max="99"
+                                value={this.state.int}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup controlId="fthInput">
+                            <ControlLabel>FTH</ControlLabel>
+                            <FormControl
+                                name="fth"
+                                type="number" min="1" max="99"
+                                value={this.state.fth}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup controlId="humanityInput">
+                            <ControlLabel>Humanity</ControlLabel>
+                            <FormControl
+                                name="humanity"
+                                type="number" min="0" max="99"
+                                value={this.state.humanity}
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <ControlLabel>Starting Class</ControlLabel>
+                            <SelectInput name="startingClass"
+                                displayName="Starting Class"
+                                options={this.state.startingClasses}
+                                selectedOption={this.state.selectedStartingClass}
+                                onSelectOptionChange={this.handleStartingClassChange}
+                            />
+                        </FormGroup>
                     </Col>
                     <Col sm={10}>
                         <Row>
-                            <Col sm={3}>
+                            <Col sm={4}>
                                 <FormGroup>
                                     <ControlLabel>Weapon</ControlLabel>
                                     <SelectInput name="baseWeapon"
@@ -227,8 +220,11 @@ export class CalculatorForm extends Component {
                                         onSelectOptionChange={this.handleBaseWeaponChange}
                                     />
                                 </FormGroup>
+                                <FormGroup>
+                                    <Checkbox inline onChange={this.toggleTwoHand}>Two-hand Weapon</Checkbox>
+                                </FormGroup>
                             </Col>
-                            <Col sm={3}>
+                            <Col sm={4}>
                                 <FormGroup>
                                     <ControlLabel>Infusion</ControlLabel>
                                     <SelectInput name="infusion"
@@ -239,7 +235,7 @@ export class CalculatorForm extends Component {
                                     />
                                 </FormGroup>
                             </Col>
-                            <Col sm={3}>
+                            <Col sm={4}>
                                 <FormGroup>
                                     <ControlLabel>Upgrade</ControlLabel>
                                     <SelectInput name="upgrade"
@@ -260,6 +256,8 @@ export class CalculatorForm extends Component {
                                     dex={this.state.dex}
                                     int={this.state.int}
                                     fth={this.state.fth}
+                                    humanity={this.state.humanity}
+                                    isTwoHand={this.state.isTwoHand}
                                 />
                             </Col>
                         </Row>

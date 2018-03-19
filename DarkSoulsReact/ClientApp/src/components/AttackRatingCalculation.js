@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { AttackRatingDisplay } from './AttackRatingDisplay';
+import { RequirementsNotMetDisplay } from './RequirementsNotMetDisplay';
 
 export class AttackRatingCalculation extends Component {
     displayName = AttackRatingCalculation.name
@@ -9,6 +10,7 @@ export class AttackRatingCalculation extends Component {
         this.state = {
             weaponName: '',
             upgradeLevel: '',
+            requirementsMet: true,
 
             physicalBase: 0,
             magicBase: 0,
@@ -33,11 +35,14 @@ export class AttackRatingCalculation extends Component {
             strScalingModifier: 0,
             dexScalingModifier: 0,
             intScalingModifier: 0,
-            fthScalingModifier: 0
+            fthScalingModifier: 0,
+
+            chaosPhysicalBonus: 0,
+            chaosFireBonus: 0
         };
     }
 
-    render() {
+    renderAttackRatingDisplay() {
         const physBase = this.state.physicalBase;
         const magicBase = this.state.magicBase;
         const fireBase = this.state.fireBase;
@@ -67,38 +72,63 @@ export class AttackRatingCalculation extends Component {
         var dexBonus = (dexScaling / 100) * upgradeDexMod * (dexCorrection / 100);
         var intBonus = (intScaling / 100) * upgradeIntMod * (intCorrection / 100);
         var fthBonus = (fthScaling / 100) * upgradeFthMod * (fthCorrection / 100);
-    
-        var totalPhysical = (physBase * upgradePhysMod) 
-                            + (physBase * upgradePhysMod * strBonus)
-                            + (physBase * upgradePhysMod * dexBonus);
 
-        var totalMagic = (magicBase * upgradeMagicMod) 
-                            + (magicBase * upgradeMagicMod * intBonus)
-                            + (magicBase * upgradeMagicMod * fthBonus);   
-                            
-        var totalFire = (fireBase * upgradeFireMod) 
-                            + (fireBase * upgradeFireMod * intBonus)
-                            + (fireBase * upgradeFireMod * fthBonus);  
-        
-        var totalLightning = (lightBase * upgradeLightMod) 
-                            + (lightBase * upgradeLightMod * intBonus)
-                            + (lightBase * upgradeLightMod * fthBonus);  
+        const chaosPhysicalBonus = this.state.chaosPhysicalBonus;
+        const chaosFireBonus = this.state.chaosFireBonus;
+
+        var totalPhysical = (physBase * upgradePhysMod)
+            + (physBase * upgradePhysMod * strBonus)
+            + (physBase * upgradePhysMod * dexBonus)
+            + (physBase * upgradePhysMod * chaosPhysicalBonus);
+
+        var totalMagic = (magicBase * upgradeMagicMod)
+            + (magicBase * upgradeMagicMod * intBonus)
+            + (magicBase * upgradeMagicMod * fthBonus);
+
+        var totalFire = (fireBase * upgradeFireMod)
+            + (fireBase * upgradeFireMod * intBonus)
+            + (fireBase * upgradeFireMod * fthBonus)
+            + (fireBase * upgradePhysMod * chaosFireBonus);
+
+        var totalLightning = (lightBase * upgradeLightMod)
+            + (lightBase * upgradeLightMod * intBonus)
+            + (lightBase * upgradeLightMod * fthBonus);
 
         var fullWeaponName = `${this.state.weaponName} ${this.state.upgradeLevel}`;
 
         return (
-        <div>
-            <AttackRatingDisplay weaponDisplayName={fullWeaponName}
-                        totalPhysical={totalPhysical}
-                        totalMagic={totalMagic}
-                        totalFire={totalFire}
-                        totalLightning={totalLightning}
-                        strScaling={strScaling * upgradeStrMod}
-                        dexScaling={dexScaling * upgradeDexMod}
-                        intScaling={intScaling * upgradeIntMod}
-                        fthScaling={fthScaling * upgradeFthMod} />
-        </div>
+            <div>
+                <AttackRatingDisplay weaponDisplayName={fullWeaponName}
+                    totalPhysical={totalPhysical}
+                    totalMagic={totalMagic}
+                    totalFire={totalFire}
+                    totalLightning={totalLightning}
+                    strScaling={strScaling * upgradeStrMod}
+                    dexScaling={dexScaling * upgradeDexMod}
+                    intScaling={intScaling * upgradeIntMod}
+                    fthScaling={fthScaling * upgradeFthMod} />
+            </div>
         );
+    }
+
+    renderRequirementsNotMetDisplay() {
+        var fullWeaponName = `${this.state.weaponName} ${this.state.upgradeLevel}`;
+
+        return (
+            <div>
+                <RequirementsNotMetDisplay weaponDisplayName={fullWeaponName}
+                    requiredStrength={this.props.weapon.requiredStrength}
+                    requiredDexterity={this.props.weapon.requiredAgility}
+                    requiredIntelligence={this.props.weapon.requiredMagic}
+                    requiredFaith={this.props.weapon.requiredFaith} />
+            </div>
+        );
+    }
+
+    render() {
+        return this.state.requirementsMet ?
+            this.renderAttackRatingDisplay() :
+            this.renderRequirementsNotMetDisplay();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -112,10 +142,14 @@ export class AttackRatingCalculation extends Component {
         const dex = props.dex;
         const int = props.int;
         const fth = props.fth;
+        const humanity = props.humanity;
+        const isTwoHand = props.isTwoHand;
 
         if (!weapon || !upgrade) {
             return;
         }
+
+        this.checkMinimumRequirements(props);
 
         if (this.props.weapon && this.props.upgrade &&
             weapon.id === this.props.weapon.id &&
@@ -123,12 +157,15 @@ export class AttackRatingCalculation extends Component {
             str === this.props.str &&
             dex === this.props.dex &&
             int === this.props.int &&
-            fth === this.props.fth) {
+            fth === this.props.fth &&
+            humanity === this.props.humanity &&
+            isTwoHand === this.props.isTwoHand) {
                 return;
             }
 
         if (this.props.str !== str || this.props.dex !== dex ||
-            this.props.int !== int || this.props.fth !== fth ) {
+            this.props.int !== int || this.props.fth !== fth || 
+            this.props.humanity !== humanity || this.props.isTwoHand !== isTwoHand) {
             //Character attribute changed. Recalculate Correction values.
             this.updateCorrectionValues(weapon, props);
         } 
@@ -142,6 +179,22 @@ export class AttackRatingCalculation extends Component {
             //Weapon Upgrade Level changed. Update Upgrade values.
             this.updateUpgradeValues(upgrade);
         }
+    }
+
+    checkMinimumRequirements(props) {
+        const weapon = props.weapon;
+        const str = (props.isTwoHand ? props.str * 1.5 : props.str);
+        const dex = props.dex;
+        const int = props.int;
+        const fth = props.fth;
+
+        var requirementsMet = (weapon.requiredStrength <= str &&
+            weapon.requiredAgility <= dex &&
+            weapon.requiredMagic <= int &&
+            weapon.requiredFaith <= fth);
+
+        this.setState({ requirementsMet: requirementsMet });
+        return requirementsMet;
     }
 
     updateWeaponValues(weapon) {
@@ -176,11 +229,15 @@ export class AttackRatingCalculation extends Component {
         //Weapon: Correction values
         const breakpoints = weapon.correctionBreakpoints;
 
-        var strCorrection = this.calculateCorrectionValuesForAttribute(props.str, breakpoints);
+        const str = (props.isTwoHand ? props.str * 1.5 : props.str);
+
+        var strCorrection = this.calculateCorrectionValuesForAttribute(str, breakpoints);
         var dexCorrection = this.calculateCorrectionValuesForAttribute(props.dex, breakpoints);
         var intCorrection = this.calculateCorrectionValuesForAttribute(props.int, breakpoints);
         var fthCorrection = this.calculateCorrectionValuesForAttribute(props.fth, breakpoints);
-    
+        
+        this.calculateHumanityBonus(props);
+
         this.setState({
             strCorrection: strCorrection,
             dexCorrection: dexCorrection,
@@ -256,5 +313,67 @@ export class AttackRatingCalculation extends Component {
             (attribute - prevStageMaxVal);
 
         return correction;
+    }
+
+    calculateHumanityBonus(props) {
+        const humanity = parseInt(props.humanity, 0);
+        const upgrade = props.upgrade;
+        const weapon = props.weapon;
+
+        var physModifier = 0;
+        var fireModifier = 0;
+
+        //TODO: These hardcoded values should come from the db/API
+        if ((parseInt(upgrade.infusionId, 0) !== 900 && 
+            parseInt(weapon.baseWeaponId, 0) !== 406) 
+            || humanity === 0) {
+            physModifier = 0;
+            fireModifier = 0;
+        }
+        else if (humanity === 1) {
+            physModifier = 0.24;
+            fireModifier = 0.24;
+        }
+        else if (humanity === 2) {
+            physModifier = 0.36;
+            fireModifier = 0.36;
+        }
+        else if (humanity === 3) {
+            physModifier = 0.48;
+            fireModifier = 0.48;
+        }
+        else if (humanity === 4) {
+            physModifier = 0.56;
+            fireModifier = 0.56;
+        }
+        else if (humanity === 5) {
+            physModifier = 0.62;
+            fireModifier = 0.62;
+        }
+        else if (humanity === 6) {
+            physModifier = 0.70;
+            fireModifier = 0.70;
+        }
+        else if (humanity === 7) {
+            physModifier = 0.76;
+            fireModifier = 0.76;
+        }
+        else if (humanity === 8) {
+            physModifier = 0.84;
+            fireModifier = 0.86;
+        }
+        else if (humanity === 9) {
+            physModifier = 0.92;
+            fireModifier = 0.94;
+        }
+        else if (humanity >= 10) {
+            physModifier = 1;
+            fireModifier = 1;
+        }
+
+        this.setState({ 
+            chaosPhysicalBonus : physModifier * .21,
+            chaosFireBonus : fireModifier * .21
+        });
     }
 }

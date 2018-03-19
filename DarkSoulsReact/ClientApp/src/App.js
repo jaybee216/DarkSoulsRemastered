@@ -6,7 +6,7 @@ import { CalculatorForm } from './components/CalculatorForm';
 import { Contact } from './components/Contact';
 
 export default class App extends Component {
-  displayName = App.name
+  displayName = "DS Remastered AR Calculator"
 
   render() {
     return (
