@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DarkSoulsReact.Controllers
+namespace DarkSoulsVue.Controllers
 {
     [Route("api/[controller]")]
     public class WeaponsController : Controller
