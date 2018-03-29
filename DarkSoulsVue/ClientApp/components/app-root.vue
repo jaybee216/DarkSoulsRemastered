@@ -19,11 +19,15 @@ import CounterExample from './counter-example'
 import FetchData from './fetch-data'
 import HomePage from './home-page'
 import NavMenu from './nav-menu'
+import CalculatorForm from './CalculatorForm'
+import Calculation from './Calculation'
 
 Vue.component('counter-example', CounterExample);
 Vue.component('fetch-data', FetchData);
 Vue.component('home-page', HomePage);
 Vue.component('nav-menu', NavMenu);
+Vue.component('calculator-form', CalculatorForm);
+Vue.component('calculation', Calculation);
 
 export default {
     data() {

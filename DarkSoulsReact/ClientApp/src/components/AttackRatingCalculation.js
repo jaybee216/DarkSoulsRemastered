@@ -88,7 +88,7 @@ export class AttackRatingCalculation extends Component {
         var totalFire = (fireBase * upgradeFireMod)
             + (fireBase * upgradeFireMod * intBonus)
             + (fireBase * upgradeFireMod * fthBonus)
-            + (fireBase * upgradePhysMod * chaosFireBonus);
+            + (fireBase * upgradeFireMod * chaosFireBonus);
 
         var totalLightning = (lightBase * upgradeLightMod)
             + (lightBase * upgradeLightMod * intBonus)

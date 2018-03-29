@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import * as types from './mutation-types';
 
 Vue.use(Vuex);
 
@@ -9,16 +10,16 @@ const store = new Vuex.Store({
     baseWeapons: []
   },
   actions: {
-    GET_BASE_WEAPON_LIST: function ({ commit }) {
-      axios.get('/api/weapons/baseWeapons').then((response) => {
-        commit('SET_BASE_WEAPON_LIST', { baseWeapons: response.data });
+    getBaseWeapons: function ({ commit }) {
+      axios.get('https://localhost:5001/api/weapons/baseWeapons').then((response) => {
+        commit([types.SET_BASE_WEAPON_LIST], { baseWeapons: response.data });
       }, (err) => {
         console.log(err);
       });
     }
   },
   mutations: {
-    SET_BASE_WEAPON_LIST: (state, { baseWeapons }) => {
+    [types.SET_BASE_WEAPON_LIST]: (state, { baseWeapons }) => {
       state.baseWeapons = baseWeapons;
     }
   },

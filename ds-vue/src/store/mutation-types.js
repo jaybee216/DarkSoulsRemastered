@@ -1,0 +1,1 @@
+export const SET_BASE_WEAPON_LIST = 'SET_BASE_WEAPON_LIST';
